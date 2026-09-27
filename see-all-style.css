@@ -253,5 +253,6 @@ html:has(#contacts.show-menu) body > *:not(#fixed):not(#custom-cursor):not(#hove
     height: 88%;
       left: 0.5rem;
     z-index: 1;   /* mask sits behind the title text */
+      background-color: rgba(0, 251, 255, 1);
   }
 }

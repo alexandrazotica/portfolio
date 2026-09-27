@@ -74,11 +74,11 @@ html:has(#contacts.show-menu) .mobile-hero-video {
 
 /* ---- Glitch transition between videos ---- */
 
-.hero-videos.glitch {
+.hero-videos.glitch, .mobile-hero-pair.glitch {
   animation: hero-glitch .5s steps(1, end) 1;
 }
 
-.hero-videos::after {
+.hero-videos::after, .mobile-hero-pair::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -186,9 +186,9 @@ html:has(.menu-item:hover) #video-info-row {
   #video-label {
     font-size: clamp(2.25rem, 20vw, 3.75rem);
     letter-spacing: -0.1rem;
+    line-height: 0.9;      /* tighter spacing between wrapped lines */
     white-space: normal;
     max-width: 90vw;
-
     text-align: center;
   }
 

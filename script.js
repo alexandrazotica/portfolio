@@ -242,13 +242,25 @@ function show(i) {
   }
 }
 
+function activeGlitchTarget() {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const showingVertical = document.documentElement.classList.contains('mobile-vertical-mode');
+  // .hero-videos is visible on desktop, OR on mobile when in vertical mode
+  if (!isMobile || showingVertical) return heroWrap;
+  // otherwise the mobile pair is what's on screen
+  return document.querySelector('.mobile-hero-pair');
+}
+
 function glitchTo(i) {
   if (glitching) return;
   glitching = true;
-  heroWrap.classList.add('glitch');
+
+  const target = activeGlitchTarget();
+  target.classList.add('glitch');
+
   setTimeout(() => show(i), 250);   // swap at the blacked-out midpoint
   setTimeout(() => {
-    heroWrap.classList.remove('glitch');
+    target.classList.remove('glitch');
     glitching = false;
   }, 500);                          // must match the CSS duration
 }
