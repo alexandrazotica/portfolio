@@ -88,6 +88,11 @@ html:has(#contacts.show-menu) .mobile-hero-video {
   100% { transform: none;                           filter: none;                                                    clip-path: inset(0); }
 }
 
+.hero-videos.glitch-loop,
+.mobile-hero-pair.glitch-loop {
+  animation: hero-glitch .5s steps(1, end) infinite;   /* infinite instead of 1 */
+}
+
 /* ==========================================================================
    VIDEO INFO ROW  (project name link + categories, over the hero video)
    ========================================================================== */

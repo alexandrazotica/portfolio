@@ -18,52 +18,8 @@
 	font-display: swap;
 }
 
-/* ---- Loader ---- */
-#loader {
-  position: fixed;
-  inset: 0;
-  z-index: 9997;               /* below the glitch overlay (9998) so the exit can play over it */
-  display: none;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 2rem;
-  background: var(--glitch-deep);
-  color: var(--glitch-bright);
-}
-html.loading #loader { display: flex; }
-html.loading { overflow: hidden; }
 
-#loader-label {
-  font-size: .8rem;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  opacity: .7;
-}
 
-#loader-count {
-  font-size: clamp(6rem, 22vw, 20rem);
-  line-height: .85;
-  font-variant-numeric: tabular-nums;
-  text-shadow: -4px 0 rgba(0, 90, 255, .9), 4px 0 rgba(0, 251, 255, .45);
-  animation: loader-jitter .6s steps(1, end) infinite;
-}
-
-#loader-bar {
-  height: 2px;
-  margin-top: 1.5rem;
-  background: rgba(0, 251, 255, .2);
-}
-#loader-bar i {
-  display: block;
-  width: 0;
-  height: 100%;
-  background: var(--glitch-bright);
-  box-shadow: 0 0 12px var(--glitch-bright);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #loader-count { animation: none; }
-}
 
 /* ==========================================================================
    RESET / BASE

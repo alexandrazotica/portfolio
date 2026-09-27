@@ -248,6 +248,8 @@ function activeGlitchTarget() {
   return document.querySelector('.mobile-hero-pair');
 }
 
+let pendingTarget = null; // remember which wrapper we started glitching on
+
 function glitchTo(i) {
   if (glitching) return;
   glitching = true;
@@ -260,6 +262,26 @@ function glitchTo(i) {
     target.classList.remove('glitch');
     glitching = false;
   }, 500);                          // must match the CSS duration
+}
+
+function startPendingGlitch() {
+  if (glitching) return;
+  glitching = true;
+  pendingTarget = activeGlitchTarget();
+  pendingTarget.classList.add('glitch-loop');
+}
+
+function resolvePendingGlitch(i) {
+  const target = pendingTarget || activeGlitchTarget();
+  target.classList.remove('glitch-loop');
+  target.classList.add('glitch');
+
+  setTimeout(() => show(i), 250);
+  setTimeout(() => {
+    target.classList.remove('glitch');
+    glitching = false;
+    pendingTarget = null;
+  }, 500);
 }
 
 function advance() {
