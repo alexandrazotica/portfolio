@@ -511,8 +511,8 @@ color:rgba(0, 0, 0, 0.7);
   text-align: left;
 }
 
-#works { max-width: 3rem; transform: none; }
-#info {transform: none}
+#works { max-width: 3rem; transform: translateX(1.05rem); }
+#info {transform: translateX(-0.5rem)}
 #contacts     { max-width: 4.5rem; transform:none; }   /* enough to fit "Contacts" on one line */
 
 .menu-item .label,
@@ -531,12 +531,30 @@ color:rgba(0, 0, 0, 0.7);
   /* ---- Info panel: full-width, single column ---- */
   
    #info.show-menu .panel {
+     position: fixed; 
     left: auto;
     right: 0;
     width: 78vw;
     font-size: clamp(0.95rem, 2vw, 1rem);
-  height: clamp(18rem, calc(83.5vh - var(--sticky-offset)), calc(62.6rem - var(--sticky-offset)));
+  height: clamp(10rem, calc(83.5vh - var(--sticky-offset)), calc(62.6rem - var(--sticky-offset)));
     overflow-y: auto;
+     /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-color) transparent;
+  }
+
+  /* Chrome / Safari / Edge (WebKit) */
+  #info.show-menu .panel::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #info.show-menu .panel::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #info.show-menu .panel::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-color);
+    border-radius: 3px;
   }
 
 #info.show-menu .panel .content {
@@ -577,39 +595,6 @@ color:rgba(0, 0, 0, 0.7);
   }
   #az.kao-swap .az-kao {
     margin-left: .4em;
-  }
-}
-
-@media (max-width: 480px) {
-  /* ---- Extra-narrow phones: tighten further ---- */
-  #info.show-menu {
-    --panel-width: 100vw;
-    --panel-height: 100vh;
-  }
-
-  #info.show-menu .panel {
-    top: 0;
-  left: auto;
-  right: 0;
-  border-radius: 0;
-  overflow-y: auto;
-    /* Firefox */
-    scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-color) transparent;
-  }
-
-  /* Chrome / Safari / Edge (WebKit) */
-  #info.show-menu .panel::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  #info.show-menu .panel::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  #info.show-menu .panel::-webkit-scrollbar-thumb {
-    background-color: var(--scrollbar-color);
-    border-radius: 3px;
   }
 }
 
