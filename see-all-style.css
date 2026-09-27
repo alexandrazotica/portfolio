@@ -1,9 +1,10 @@
 /* fixed — excludes the cursor from the blur */
-html:has(#info.show-menu) body > *:not(#fixed):not(#custom-cursor),
-html:has(#works.show-menu) body > *:not(#fixed):not(#custom-cursor),
-html:has(#contacts.show-menu) body > *:not(#fixed):not(#custom-cursor) {
+html:has(#info.show-menu) body > *:not(#fixed):not(#custom-cursor):not(#hover-display),
+html:has(#works.show-menu) body > *:not(#fixed):not(#custom-cursor):not(#hover-display),
+html:has(#contacts.show-menu) body > *:not(#fixed):not(#custom-cursor):not(#hover-display) {
   filter: blur(20px);
   transition: filter .3s ease;
+    pointer-events: none;
 }
 
 .menu-item .label {
@@ -184,7 +185,7 @@ html:has(#contacts.show-menu) body > *:not(#fixed):not(#custom-cursor) {
 
 @media (max-width: 700px) {
   .projects {
-    padding: 4rem 4rem 2rem 2rem;
+    padding: 4rem 4rem 2rem 1rem;
   }
 
   /* ---- Project title rows ---- */
@@ -239,8 +240,18 @@ html:has(#contacts.show-menu) body > *:not(#fixed):not(#custom-cursor) {
     display: none;
   }
 
+  .project-item {
+    position: relative;   /* already present, keeping it explicit here for clarity */
+  }
+
+  .project-title {
+    position: relative;
+    z-index: 2;   /* text now renders above the mask */
+  }
+
   .project-item .row-mask {
-  height: 85%;
-  background-color: rgba(0, 251, 255, 0.35);
-}
+    height: 88%;
+      left: 0.5rem;
+    z-index: 1;   /* mask sits behind the title text */
+  }
 }

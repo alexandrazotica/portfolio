@@ -1,9 +1,10 @@
 /* fixed — excludes the cursor from the blur */
-html:has(#info.show-menu) body > *:not(#fixed):not(#custom-cursor),
-html:has(#works.show-menu) body > *:not(#fixed):not(#custom-cursor),
-html:has(#contacts.show-menu) body > *:not(#fixed):not(#custom-cursor) {
+html:has(#info.show-menu) body > *:not(#fixed):not(#custom-cursor):not(#hover-display),
+html:has(#works.show-menu) body > *:not(#fixed):not(#custom-cursor):not(#hover-display),
+html:has(#contacts.show-menu) body > *:not(#fixed):not(#custom-cursor):not(#hover-display) {
   filter: blur(20px);
   transition: filter .3s ease;
+    pointer-events: none;
 }
 
 .menu-item .label {

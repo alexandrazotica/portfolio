@@ -540,6 +540,15 @@ color:rgba(0, 0, 0, 0.7);
   gap: 0.5rem;
   }
 
+  .content .row a {
+    position: relative;
+    z-index: 2;
+  }
+
+  .content .row-mask {
+    z-index: 1;
+  }
+
   .menu-item,
 .menu-item.menu-link {
   flex: 0 0 auto;
@@ -565,15 +574,14 @@ color:rgba(0, 0, 0, 0.7);
 
   /* ---- Info panel: full-width, single column ---- */
   
-  #info.show-menu .panel {
-  left: auto;
-  right: 0;
-  width: 83vw;
-  height: 90vh;
-  font-size: clamp(0.95rem, 2vw, 1rem);
-  height: clamp(31.3rem, 83.5vh, 62.6rem); 
-  overflow-y:auto;
-}
+   #info.show-menu .panel {
+    left: auto;
+    right: 0;
+    width: 83vw;
+    font-size: clamp(0.95rem, 2vw, 1rem);
+    height: clamp(31.3rem, calc(83.5vh - var(--sticky-offset)), calc(62.6rem - var(--sticky-offset)));
+    overflow-y: auto;
+  }
 
 #info.show-menu .panel .content {
   padding: 1rem 1rem;
@@ -639,3 +647,52 @@ color:rgba(0, 0, 0, 0.7);
   color:  rgba(0, 0, 0, 0.75);
 }
 
+#hover-display {
+  position: fixed;
+  display: block;
+  padding: 2rem 0rem;
+  bottom: 0rem;
+  height: var(--sticky-offset);
+  line-height: 9rem;
+  font-size: 10rem;
+  font-weight: 700;
+  color: rgba(0, 251, 255, 0);
+  pointer-events: none;
+  transition: color .2s ease, background-color .3s ease;
+  z-index: 10000;
+}
+
+
+#hover-display.visible {
+  color: rgb(255, 0, 153);
+  background-color: rgba(0, 251, 255);
+}
+
+html:has(#info.show-menu) #az,
+html:has(#info.show-menu) .hour,
+html:has(#info.show-menu) #hover-display.visible,
+html:has(#works.show-menu) #az,
+html:has(#works.show-menu) .hour,
+html:has(#works.show-menu) #hover-display.visible,
+html:has(#contacts.show-menu) #az,
+html:has(#contacts.show-menu) .hour,
+html:has(#contacts.show-menu) #hover-display.visible {
+  color: rgba(0, 0, 0, 0.8);
+  transition: color .3s ease;
+}
+
+@media (max-width: 768px) {
+
+#hover-display {
+  padding: 1.5rem 0rem;
+  bottom: 0rem;
+  height: var(--sticky-offset);
+  line-height: 9rem;
+  font-size: 6rem;
+  font-weight: 700;
+  color: rgba(0, 251, 255, 0);
+  pointer-events: none;
+  transition: color .2s ease, background-color .3s ease;
+  z-index: 10000;
+}
+}
