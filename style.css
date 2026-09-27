@@ -636,6 +636,24 @@ color:rgba(0, 0, 0, 0.7);
   left: auto;
   right: 0;
   border-radius: 0;
+  overflow-y: auto;
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-color) transparent;
+  }
+
+  /* Chrome / Safari / Edge (WebKit) */
+  #info.show-menu .panel::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #info.show-menu .panel::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #info.show-menu .panel::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-color);
+    border-radius: 3px;
   }
 }
 
