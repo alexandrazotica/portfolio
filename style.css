@@ -319,6 +319,10 @@ height: calc(var(--panel-height) + 0.1rem);
   transform: translateX(clamp(-6rem, -6vw, 0rem));
 }
 
+#info { 
+  transform: translateX(clamp(-0.5rem, -2vw, 0rem));
+}
+
 #works.show-menu .panel, #contacts.show-menu .panel {
   position: absolute;
   top: 0;
