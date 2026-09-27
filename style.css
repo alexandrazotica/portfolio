@@ -649,11 +649,13 @@ color:rgba(0, 0, 0, 0.7);
 
 #hover-display {
   position: fixed;
-  display: block;
+  display: flex;              /* was: display: block */
+  align-items: center;        /* vertically centers the text in the box */
+  justify-content: center;    /* or flex-start if you don't want it centered horizontally */
   padding: 2rem 0rem;
   bottom: 0rem;
   height: var(--sticky-offset);
-  line-height: 9rem;
+  line-height: 1;              /* no longer needs to match font-size manually */
   font-size: 10rem;
   font-weight: 700;
   color: rgba(0, 251, 255, 0);
@@ -682,17 +684,16 @@ html:has(#contacts.show-menu) #hover-display.visible {
 }
 
 @media (max-width: 768px) {
-
-#hover-display {
-  padding: 1.5rem 0rem;
-  bottom: 0rem;
-  height: var(--sticky-offset);
-  line-height: 9rem;
-  font-size: 6rem;
-  font-weight: 700;
-  color: rgba(0, 251, 255, 0);
-  pointer-events: none;
-  transition: color .2s ease, background-color .3s ease;
-  z-index: 10000;
-}
+  #hover-display {
+    padding: 1.5rem 0rem;
+    bottom: 0rem;
+    height: var(--sticky-offset);
+    line-height: 1;
+    font-size: 6rem;
+    font-weight: 700;
+    color: rgba(0, 251, 255, 0);
+    pointer-events: none;
+    transition: color .2s ease, background-color .3s ease;
+    z-index: 10000;
+  }
 }

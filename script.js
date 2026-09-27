@@ -59,21 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
 const hoverDisplay = document.getElementById('hover-display');
 const expandables = document.querySelectorAll('[data-hover-label]');
 const HOVER_BASE_FONT_SIZE = 160; // px, matches your CSS 10rem (10 * 16px)
-const HOVER_LINE_HEIGHT_RATIO = 0.9; // matches your 9rem / 10rem ratio
 
 function setHoverDisplayText(text) {
   hoverDisplay.style.fontSize = `${HOVER_BASE_FONT_SIZE}px`;
-  hoverDisplay.style.lineHeight = `${HOVER_BASE_FONT_SIZE * HOVER_LINE_HEIGHT_RATIO}px`;
   hoverDisplay.textContent = text;
 
-  const maxWidth = window.innerWidth * 0.96; // small margin so it never touches the edge
+  const maxWidth = window.innerWidth * 0.9999; // small margin so it never touches the edge
   const naturalWidth = hoverDisplay.scrollWidth;
 
   if (naturalWidth > maxWidth) {
     const scale = maxWidth / naturalWidth;
     const fittedSize = HOVER_BASE_FONT_SIZE * scale;
     hoverDisplay.style.fontSize = `${fittedSize}px`;
-    hoverDisplay.style.lineHeight = `${fittedSize * HOVER_LINE_HEIGHT_RATIO}px`;
   }
 }
 
