@@ -519,6 +519,11 @@ color:rgba(0, 0, 0, 0.7);
 /* ==========================================================================
    RESPONSIVE — MOBILE / SMALL SCREENS
    ========================================================================== */
+@media (hover: none) and (pointer: coarse) {
+  #custom-cursor {
+    display: none;
+  }
+}
 
 @media (max-width: 768px) {
 
