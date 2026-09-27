@@ -241,6 +241,6 @@ html:has(#contacts.show-menu) body > *:not(#fixed):not(#custom-cursor) {
 
   .project-item .row-mask {
   height: 85%;
-  background-color: rgba(0, 251, 255, 0.70);
+  background-color: rgba(0, 251, 255, 0.35);
 }
 }
