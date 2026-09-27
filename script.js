@@ -284,12 +284,18 @@ function resolvePendingGlitch(i) {
   }, 500);
 }
 
+// new:
 function advance() {
   const next = 1 - current;
-  if (ready[next]) glitchTo(next);
-  else pendingSwap = true;
+  if (ready[next]) {
+    glitchTo(next);
+  } else {
+    pendingSwap = true;
+    startPendingGlitch();
+  }
 }
 
+// new:
 function markReady(i) {
   if (ready[i]) return;
   ready[i] = true;
@@ -298,7 +304,7 @@ function markReady(i) {
     load(1 - i);
   } else if (pendingSwap && i === 1 - current) {
     pendingSwap = false;
-    glitchTo(i);
+    resolvePendingGlitch(i);
   }
 }
 
