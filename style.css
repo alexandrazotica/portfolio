@@ -703,7 +703,6 @@ html:has(#contacts.show-menu) #hover-display.visible {
 
 @media (max-width: 768px) {
   #hover-display {
-    padding: 1.5rem 0rem;
     bottom: 0rem;
     height: var(--sticky-offset);
     line-height: 1;
