@@ -1,0 +1,636 @@
+/* ==========================================================================
+   FONTS
+   ========================================================================== */
+
+@font-face {
+	font-family: 'Univers';
+	src: url('assets/font/Univers-Bold.otf') format('opentype');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Univers';
+	src: url('assets/font/Univers.otf') format('opentype');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* ---- Loader ---- */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9997;               /* below the glitch overlay (9998) so the exit can play over it */
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  background: var(--glitch-deep);
+  color: var(--glitch-bright);
+}
+html.loading #loader { display: flex; }
+html.loading { overflow: hidden; }
+
+#loader-label {
+  font-size: .8rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  opacity: .7;
+}
+
+#loader-count {
+  font-size: clamp(6rem, 22vw, 20rem);
+  line-height: .85;
+  font-variant-numeric: tabular-nums;
+  text-shadow: -4px 0 rgba(0, 90, 255, .9), 4px 0 rgba(0, 251, 255, .45);
+  animation: loader-jitter .6s steps(1, end) infinite;
+}
+
+#loader-bar {
+  height: 2px;
+  margin-top: 1.5rem;
+  background: rgba(0, 251, 255, .2);
+}
+#loader-bar i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--glitch-bright);
+  box-shadow: 0 0 12px var(--glitch-bright);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #loader-count { animation: none; }
+}
+
+/* ==========================================================================
+   RESET / BASE
+   ========================================================================== */
+
+* {
+  cursor: none; /* hide the native cursor everywhere */
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+:root{
+	--base-font: 'Univers', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --sticky-offset: 6rem;
+  --scrollbar-color: rgb(255, 0, 153);
+  --accent-bg: rgb(255, 0, 153); /* new — shared background driver */
+}
+
+body {
+  font-family: var(--base-font);
+  font-weight: 700;
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.7);
+  letter-spacing: -0.02em;
+  background-color: var(--accent-bg);   /* was a literal rgb() value */
+  transition: background-color .3s ease;
+  overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    color:rgba(0, 0, 0, 0.7);
+}
+
+/* ==========================================================================
+   CUSTOM CURSOR
+   ========================================================================== */
+
+#custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 999999;
+    mix-blend-mode: difference;
+}
+
+.cursor-shape {
+  width: 20px;
+  height: 20px;
+  background-color: rgb(255, 0, 153);
+  clip-path: inset(2px); /* square */
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform .15s ease;
+  z-index: 999999;
+}
+
+.cursor-shape.hover-target {
+  transform: scale(1.8);
+}
+
+.dust-particle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 999998; /* under #custom-cursor's 999999 */
+  mix-blend-mode: difference;
+  background-color: rgb(255, 0, 153);
+  opacity: 0.9;
+  transition: transform .6s ease-out, opacity .6s ease-out;
+  will-change: transform, opacity;
+}
+
+/* ==========================================================================
+   HEADER / FIXED NAV (name, clock, Works / Contacts / Info menus)
+   ========================================================================== */
+
+#fixed {
+  gap: 0.25rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  box-sizing: border-box;
+  z-index: 95000;      /* new — higher than #hover-display */
+}
+
+#az a {
+  display: inline-flex;
+  align-items: baseline;
+  overflow: hidden;
+  color: rgb(255, 0, 153);
+  background-color: rgba(0, 251, 255, 1); /* was missing the alpha value — invalid before */
+  padding: 0rem 1rem 0.4rem 0.1rem;
+  mix-blend-mode: difference;
+}
+
+.menu-item.menu-link {
+  display: inline-block;
+  background-color: rgb(255, 0, 153);
+  padding: 0rem 1rem 0.4rem 0.8rem;
+}
+
+.az-letter {
+  display: inline-block;
+  white-space: pre;
+}
+
+.az-rest {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-width 0s step-end, opacity .08s linear;
+  transition-delay: var(--d);
+}
+
+#az:hover .az-rest {
+  max-width: 1.5em;
+  opacity: 1;
+  transition-delay: calc(.15s + var(--i) * .045s);
+  transition-timing-function: step-end, linear;
+}
+
+.az-z-short {
+  max-width: 1.2em;
+  opacity: 1;
+  transition: max-width .2s ease, opacity .12s ease;
+  transition-delay: .405s; /* both words now finish erasing at exactly this moment */
+}
+
+#az:hover .az-z-short {
+  max-width: 0;
+  opacity: 0;
+  transition: max-width .15s ease .05s, opacity .1s ease .05s;
+}
+
+#az .az-kao {
+  display: inline-block;
+  position: relative;
+  white-space: nowrap;
+  font-family: "Noto Sans Malayalam", system-ui, sans-serif;
+  transition: margin-left .35s ease;
+}
+
+/* at rest: only the first face */
+#az .kao-hover {
+  display: none;
+}
+
+/* on hover: swap faces and leave a gap after the name */
+#az:hover .kao-rest {
+  display: none;
+}
+#az:hover .kao-hover {
+  display: inline;
+}
+#az:hover .az-kao {
+  margin-left: .4em;
+}
+
+.hour {
+  color: rgba(0, 251, 255);
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+    position: fixed;
+  bottom: 0rem;
+  right: 0.2rem;
+  z-index: 10;
+}
+
+/* ---- Menu-item mask-expand panel (shared behavior) ---- */
+
+.menu-item {
+  position: relative;
+  align-self: flex-start;   /* don't stretch to #fixed's full height */
+  --panel-width: 100%;
+  --panel-height: 100%;
+    z-index: 1;
+}
+
+.menu-item.show-menu {
+  z-index: 2;
+}
+
+.menu-item .label {
+  position: relative;
+  z-index: 100000;
+  display: inline-block;   /* so it only wraps the word "Info", not the full flex width */
+  color: rgba(0, 251, 255);
+  transition: opacity .2s ease;
+}
+
+.menu-item.show-menu .label {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.menu-item .panel {
+  position: absolute;
+  left: -0.8rem;
+  width: calc(100% + 1.4rem);   
+  height: calc(100% + 0.5rem);   
+  z-index: 1;
+  background-color: rgb(255, 0, 153);
+  transition: width .3s ease, height .3s ease, top .3s ease, left .3s ease;
+}
+
+.menu-item.show-menu .panel {
+  top: 0;
+  left: 0;
+    backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.flicker-item .panel.flicker {
+  animation: panel-flicker .12s steps(1, end) 2;
+}
+
+@keyframes panel-flicker {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+.menu-item .panel .content {
+  display: none;
+  white-space: nowrap;
+  padding: 1.5rem 0rem;
+  font-weight: 500;
+  text-align: left;
+  color: rgb(0, 0, 0);
+}
+
+.menu-item.show-menu .panel .content {
+  display: flex;
+  flex-direction: column;   
+}
+
+.menu-item.show-menu {
+  --panel-width: clamp(16rem, 90vw, 32rem);
+  --panel-height: clamp(22rem, 100vh, 40rem);
+}
+
+.menu-item.show-menu .panel {
+  top: 0;
+  right: 0;
+  left: auto;              
+  width: calc(var(--panel-width) + 2rem);
+height: calc(var(--panel-height) + 0.1rem);
+}
+
+.content .row {
+  position: relative;
+  display: block;
+}
+
+.content .row-mask {
+  position: absolute;
+  width: 94%;                  /* narrower than the row, not edge-to-edge */
+  background-color: rgb(255, 0, 153, 0.85);  /* matches your panel color */
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+.content .row:hover .row-mask {
+  opacity: 0;
+}
+
+/* ---- Works / Contacts (flyout panels, wide link rows) ---- */
+
+.top-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+}
+
+#works {
+  transform: translateX(clamp(-20rem, -20vw, 0rem));
+}
+
+#contacts { 
+  transform: translateX(clamp(-6rem, -6vw, 0rem));
+}
+
+#works.show-menu .panel, #contacts.show-menu .panel {
+  position: absolute;
+  top: 0;
+  left: -1rem;      /* was 0 — now extends further left of the label */
+  right: auto;
+  width: calc(var(--panel-width)+2rem);
+  height: calc(var(--panel-height)+0.1rem);
+  overflow: visible;
+  background-color: rgba(0, 251, 255, 0.85);
+  padding: 1.5rem 1.5rem 0.5rem 2rem;
+  transition: width .3s ease, height .3s ease, left .3s ease;
+}
+
+#works.show-menu .panel .content, #contacts.show-menu .panel .content {
+  position: static;       /* was fixed — panel now handles positioning, content just flows inside it */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#works .content .row a, #contacts .content .row a {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 700;
+}
+
+#works .content .row-mask, #contacts .content .row-mask {
+  top: 0;
+  left: 2%;
+  width: 95%;
+  height: 80%;
+}
+
+/* ---- Info panel (bio, work, education, exhibitions, features) ---- */
+
+.info-text {
+  margin: 0 0 .8rem 0;
+  font-weight: 500;
+  white-space: normal;
+  max-width: min(25rem, 90vw);
+      color:rgba(0, 0, 0, 0.7);
+}
+
+.container-info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.info-block {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  white-space: normal;
+}
+
+.info-block-title {
+  flex: 0 0 auto;           
+  font-weight: 700;
+  font-size: 1.2rem;
+color:rgba(0, 0, 0, 0.7);
+}
+
+.info-block-list {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+      color:rgba(0, 0, 0, 0.7);
+}
+
+.info-block-list a {
+  text-decoration: underline;
+}
+
+.info-block-years {
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+}
+
+#info.show-menu {
+  --panel-width: clamp(70rem, 150vw, 80rem);
+  --panel-height: clamp(24rem, 80vh, 56rem);
+}
+
+#info.show-menu .panel {
+    background-color: rgba(0, 251, 255, 0.85);
+}
+
+#info.show-menu .panel .content {
+  padding-left: 1rem;
+}
+
+.year-group {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1rem;
+        color:rgba(0, 0, 0, 0.7);
+}
+
+.year-label {
+  flex: 0 0 auto;
+  width: 3rem;
+  font-weight: 500;
+}
+
+.intro-text {
+  margin: 0 0 1rem 35rem;
+  font-weight: 500;
+  white-space: normal;
+  max-width: min(30rem, 100vw);
+      color:rgba(0, 0, 0, 0.7);
+}
+
+.info-lower-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.work-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.work-entry {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+
+.work-date {
+  font-size: .8em;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.work-title {
+  font-weight: 700;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.work-desc {
+  font-weight: 500;
+  white-space: normal;
+  max-width: 16rem;
+      color: rgba(0, 0, 0, 0.7);
+}
+
+/* ==========================================================================
+   RESPONSIVE — MOBILE / SMALL SCREENS
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+  .hour {
+  display: none;
+}
+
+  /* ---- Header nav: stack instead of wrap awkwardly ---- */
+  #fixed {
+    display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;   /* or space-around */
+  gap: 0.5rem;
+  }
+
+  .menu-item,
+.menu-item.menu-link {
+  flex: 0 0 auto;
+  text-align: left;
+}
+
+#works { max-width: 3rem; transform: none; }
+#info {transform: none}
+#contacts     { max-width: 4.5rem; transform:none; }   /* enough to fit "Contacts" on one line */
+
+.menu-item .label,
+.menu-item.menu-link {
+  white-space: nowrap;
+}
+
+  #contacts.show-menu .panel {
+    right: 0;
+    left: auto;
+    height: clamp(12rem, 23vh, 50rem);
+    width: clamp(12rem, 22vh, 20rem);
+    padding: 0rem 1rem 2rem 1rem;
+  }
+
+  /* ---- Info panel: full-width, single column ---- */
+  
+  #info.show-menu .panel {
+  left: auto;
+  right: 0;
+  width: 83vw;
+  height: 90vh;
+  font-size: clamp(0.95rem, 2vw, 1rem);
+  height: clamp(31.3rem, 83.5vh, 62.6rem); 
+  overflow-y:auto;
+}
+
+#info.show-menu .panel .content {
+  padding: 1rem 1rem;
+}
+
+  .info-lower-row {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .info-block {
+    flex-direction: column;
+    gap: 0.5rem;
+
+  }
+
+  .info-block-title {
+    width: auto;
+  }
+
+  .intro-text {
+    margin: 0 0 1rem 0; /* the 35rem desktop offset breaks entirely on mobile */
+    max-width: 100%;
+  }
+
+  /* ---- Video info row: smaller, safer margins ---- */
+  #video-label {
+    font-size: clamp(1.1rem, 5vw, 1.6rem);
+  }
+
+    /* ---- emoji fix ---- */
+  #az.kao-swap .kao-rest {
+    display: none;
+  }
+  #az.kao-swap .kao-hover {
+    display: inline;
+  }
+  #az.kao-swap .az-kao {
+    margin-left: .4em;
+  }
+}
+
+@media (max-width: 480px) {
+  /* ---- Extra-narrow phones: tighten further ---- */
+  #info.show-menu {
+    --panel-width: 100vw;
+    --panel-height: 100vh;
+  }
+
+  #info.show-menu .panel {
+    top: 0;
+  left: auto;
+  right: 0;
+  border-radius: 0;
+  }
+}
+
+.site-footer {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0.6;
+  color:  rgba(0, 0, 0, 0.75);
+}
+

@@ -1,0 +1,246 @@
+/* fixed — excludes the cursor from the blur */
+html:has(#info.show-menu) body > *:not(#fixed):not(#custom-cursor),
+html:has(#works.show-menu) body > *:not(#fixed):not(#custom-cursor),
+html:has(#contacts.show-menu) body > *:not(#fixed):not(#custom-cursor) {
+  filter: blur(20px);
+  transition: filter .3s ease;
+}
+
+.menu-item .label {
+       color: rgb(255, 0, 153);
+}
+
+.menu-item .panel {
+  background-color: rgba(0, 251, 255);
+}
+
+.menu-item.menu-link {
+         color: rgb(255, 0, 153);
+  display: inline-block;
+  background-color: rgba(0, 251, 255);
+  padding: 0rem 1rem 0.4rem 0.8rem;
+}
+
+/* ==========================================================================
+   PROJECTS GRID / LISTING PAGE
+   ========================================================================== */
+
+.projects {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  padding: 5rem 5rem;
+  overflow: visible;
+}
+
+.project-item { 
+  position: relative; 
+  z-index: 1;
+}
+
+.project-item .row-mask {
+  position: absolute;
+  top: 0;
+  left: 0.8rem;
+  width: 100%;
+  height: 80%;
+  background-color: rgba(0, 251, 255, 0.75);
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+.project-item .row:hover .row-mask {
+  opacity: 0;
+}
+
+.project-title {
+  position: relative;
+  flex: 0 1 auto;
+  display: flex;
+  gap: 0.75rem;
+  overflow: hidden;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.title-default {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.title-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+  flex-shrink: 0;
+  font-size: clamp(0.3rem, 1vw, 1.5rem);
+}
+
+.project-year {
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.title-category {
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+}
+
+/* ---- Sort bar (Relevance / Year) ---- */
+
+.sort-bar {
+  display: flex;
+  gap: 1.5rem;
+  align-items: baseline;
+      padding: 0.5rem 0.5rem 0rem 0.5rem;
+    background-color: rgba(0,0,0,0.1);
+}
+
+.sort-btn {
+  font-family: var(--base-font);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  background: none;
+  border: none;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.4);
+  transition: color .2s ease;
+  align-items: baseline;      /* label and bar share a baseline */
+}
+
+.sort-btn:hover {
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.sort-btn.active {
+  color: var(--accent-fg, rgba(0, 251, 255));
+}
+
+#year-toggle {
+    color: var(--accent-fg, rgba(0, 251, 255));
+}
+
+.filter-row {
+  display: flex;
+  align-items: baseline;      /* label and bar share a baseline */
+  gap: 1.7rem;
+  margin-bottom: 0.5rem;
+}
+
+.filter-label {
+  flex: 0 0 6rem;
+  font-family: var(--base-font);
+  font-weight: 700;
+  font-size: .8rem;
+  line-height: 1;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.4);
+    font-weight: 500;
+}
+
+.filters {
+  margin-bottom: 2rem;
+}
+
+/* ---- Hover preview image (shown next to a project row on hover) ---- */
+
+.preview-media {
+  position: fixed;
+  top: 50%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 95001;
+}
+
+.preview-media.landscape { width: 35vw; height: auto; max-height: 70vh; }
+.preview-media.portrait  { height: 60vh; width: auto; max-width: 40vw; }
+
+.preview-media.visible { opacity: 1; visibility: visible; }
+
+#no-results {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.filter-count {
+  margin-left: .25em;
+  font-size: .6em;
+  line-height: 1;
+  vertical-align: top;
+  opacity: .6;
+  pointer-events: none;
+}
+
+.sort-btn.active .filter-count {
+  opacity: 1;
+}
+
+@media (max-width: 700px) {
+  .projects {
+    padding: 4rem 4rem 2rem 2rem;
+  }
+
+  /* ---- Project title rows ---- */
+  .project-title {
+    flex-direction: column;
+    gap: 0.15rem;
+    overflow: visible;
+  }
+
+  .title-meta {
+    order: -1;      /* moves year + category above the title */
+    flex-direction: row;
+    gap: 0.6rem;
+    font-size: 0.75rem;
+    translate: 0.8rem;
+  }
+
+  .title-default {
+    font-size: clamp(2rem, 10vw, 3rem);
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    letter-spacing: -0.06rem;
+    line-height: 3rem;
+    margin-right: 2rem;
+  }
+
+  /* ---- Filters: stack label above its bar, let buttons wrap ---- */
+  .filter-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .filter-label {
+    flex: none;
+  }
+
+  .sort-bar {
+    flex-wrap: wrap;
+    gap: 0.9rem 0.8rem;
+    row-gap: 0.2rem;
+  }
+
+  .sort-btn {
+    font-size: 0.9rem;
+  }
+
+  /* ---- Hover preview: doesn't work on touch, hide entirely ---- */
+  .preview-media {
+    display: none;
+  }
+
+  .project-item .row-mask {
+  height: 85%;
+  background-color: rgba(0, 251, 255, 0.70);
+}
+}

@@ -1,0 +1,416 @@
+/* fixed — excludes the cursor from the blur */
+html:has(#info.show-menu) body > *:not(#fixed):not(#custom-cursor),
+html:has(#works.show-menu) body > *:not(#fixed):not(#custom-cursor),
+html:has(#contacts.show-menu) body > *:not(#fixed):not(#custom-cursor) {
+  filter: blur(20px);
+  transition: filter .3s ease;
+}
+
+.menu-item .label {
+       color: rgb(255, 0, 153);
+}
+
+.menu-item .panel {
+  background-color: rgba(0, 251, 255);
+}
+
+.menu-item.menu-link {
+         color: rgb(255, 0, 153);
+  display: inline-block;
+  background-color: rgba(0, 251, 255);
+  padding: 0rem 1rem 0.4rem 0.8rem;
+}
+
+.project-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12vh 2vw 2rem;   /* raise or lower the title by changing 30vh */
+}
+
+.project-title {
+  font-size: 10rem;
+  letter-spacing: -0.4rem;
+  line-height: .9;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+.project-body {
+  align-self: stretch;               /* full width, so the columns can split */
+  display: grid;
+  grid-template-columns: 1fr 2fr;    /* attributes left, paragraph right */
+  gap: 4vw;
+  margin-top: 3vh;
+  text-align: left;
+}
+
+.project-attrs {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  gap: 1em 2.5em;
+  font-size: 1rem;
+}
+
+.attr { display: flex; flex-direction: column; gap: .2em; }
+.attr-label { opacity: .5; }
+.attr-value { display: flex; flex-direction: column; }
+.attr-value a { text-decoration: underline; }
+
+.project-description {
+font-weight: 500;
+  max-width: 80ch;
+}
+
+.project-description p {
+margin-top: 0;
+}
+
+@media (max-width: 700px) {
+ .project-title {
+font-size: clamp(3rem, 16vw, 7rem);
+letter-spacing: -0.15rem;}
+.project-body { grid-template-columns: 1fr; }
+.project-description { order: 1; }
+.project-attrs { order: 2; }
+}
+
+.project-gallery-h,
+.project-gallery-v {
+  gap: 0.5rem;
+  display: flex;
+  align-items: flex-start;   /* add this line */
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0 0 0;
+  scroll-snap-type: x proximity;
+  scroll-padding-left: 2vw;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.project-gallery-h::-webkit-scrollbar, .project-gallery-v::-webkit-scrollbar { display: none; }
+
+.project-gallery-h figure, .project-gallery-v figure {
+  flex: 0 0 auto;
+  margin: 0;
+  scroll-snap-align: start;
+}
+
+.project-gallery-h img,
+.project-gallery-h video,
+.figure-center-video video {
+  display: block;
+  height: auto;
+  width: var(--w, auto);         
+  max-width: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.project-gallery-v img,
+.project-gallery-v video {
+  display: block;
+  height: 70vh;
+  width: auto;          /* was 80vw: this is what forced everything into the same box */
+  max-width: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.photo-caption {
+display: block;
+  padding: 0.5rem 0.5rem 0;   /* the 2vw lines the caption up with the header */
+  opacity: .5;
+}
+
+#gallery-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  padding: 0 .8em .8em;
+  color: rgba(0, 251, 255);
+  mix-blend-mode: difference;
+  font-size: 1rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+#gallery-cursor.visible { opacity: 1; }
+
+/* hide your round cursor only while the label is showing */
+.gallery-hover #custom-cursor { opacity: 0 !important; }
+
+.figure-quad {
+  flex: 0 0 auto;
+  margin: 0;
+  scroll-snap-align: start;
+  width: 40vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.figure-quad-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.figure-quad img {
+  width: 50%;
+  height: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.gallery-scroll-label {
+  display: none;
+}
+
+.video-watch-button {
+  display: none;
+}
+
+.figure-center-video {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  body {
+    font-size: 0.98rem;
+  }
+  
+  .project-gallery-h img,
+  .project-gallery-h video,
+  .figure-center-video video {
+    width: var(--w-mobile, var(--w, auto));
+  }
+
+  .project-gallery-v img,
+  .project-gallery-v video {
+    height: 50vh;
+  }
+
+  .gallery-label span {
+    max-width: 6rem;
+    font-size: 0.85rem;
+  }
+
+  .photo-caption {
+    font-size: 0.85rem;
+  }
+
+  .project-nav {
+    padding: 2rem 4vw;
+  }
+
+  .project-nav-title {
+    font-size: 0.95rem;
+  }
+
+  .figure-quad {
+  width: 35vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.figure-quad img {
+  width: 50%;
+  height: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.gallery-scroll-label {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.4em;
+  padding: 0.4rem 0.8rem 0 0;
+    font-size: 0.9rem;
+    opacity: 0.6;
+  }
+
+  .gallery-scroll-arrow {
+    display: inline-block;
+    animation: nudge-next 1.2s ease-in-out infinite;
+  }
+
+  .gallery-scroll-arrow.at-end {
+    animation: nudge-prev 1.2s ease-in-out infinite;
+  }
+
+   .video-watch-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    width: fit-content;
+    margin-top: 0.5rem;
+    padding: 0rem 0.5rem 0.9rem 0;
+    background: rgba(0, 251, 255);
+    color: rgb(255, 0, 153);
+  }
+
+  .video-watch-button svg {
+    width: 1.3em;
+    height: 1.3em;
+    flex-shrink: 0;
+  }
+
+  .video-watch-button span {
+    white-space: nowrap;
+    font-size: 0.9rem;
+  }
+
+   #pittogramma-gallery-1 figure {
+    order: 1;
+  }
+
+  #pittogramma-gallery-1 figure:has(video) {
+    order: -1;
+  }
+}
+
+.project-footer {
+  display: grid;
+  grid-template-columns: 1fr 2fr;   /* same as .project-body */
+  gap: 4vw;                         /* same as .project-body */
+  padding-top: 8rem;            /* 2vw matches the header's side padding */
+}
+
+.project-footer .project-description {
+  grid-column: 2;
+}
+
+.project-footer img,
+.project-footer video {
+  grid-row: 2;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 700px) {
+  .project-footer { grid-template-columns: 1fr; padding: 4rem 0 0 0.5rem;}
+  .project-footer .project-description { grid-column: 1; }
+}
+
+.gallery-label {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: top;         /* vertically centred between the two figures */
+  justify-content: center;
+  padding: 0 1rem;             /* breathing room next to each figure */
+  scroll-snap-align: start;
+}
+
+.gallery-label span {
+  max-width: 9rem;             /* long labels wrap onto extra lines instead of widening the gap */
+  text-align: center;
+  white-space: normal;
+  opacity: .5;
+}
+
+.project-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 4rem 2vw;
+}
+
+.project-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: .2em;
+}
+
+.project-nav-link.next { margin-left: auto; text-align: right; }
+
+.project-nav-label { opacity: .5; }
+.project-nav-title { text-decoration: underline; }
+
+.project-nav-arrow {
+  display: inline-block;
+  margin: 0 .4em;
+}
+
+.project-nav-link.prev .project-nav-arrow { animation: nudge-prev 1.2s ease-in-out infinite; }
+.project-nav-link.next .project-nav-arrow { animation: nudge-next 1.2s ease-in-out infinite; }
+
+@keyframes nudge-prev {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(-.6em); }
+}
+
+@keyframes nudge-next {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(.6em); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-nav-arrow { animation: none !important; }
+}
+
+.video-full-link {
+  display: block;
+  cursor: none; /* let the custom cursor take over, like the rest of the site */
+}
+
+.video-full-link video {
+  pointer-events: none; /* clicks pass through to the <a>, not the video element */
+}
+
+/* add this to project-page-style.css */
+.video-link-hover #gallery-cursor {
+  opacity: 0 !important;
+}
+
+#video-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  padding: 0em 0.7em 0.7em 0;
+  background: rgba(0, 251, 255);
+  color: rgb(255, 0, 153);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity .2s ease;
+}
+
+#video-cursor.visible { opacity: 1; }
+
+#video-cursor svg {
+  width: 2em;
+  height: 2em;
+  flex-shrink: 0;
+}
+
+/* hide the default round cursor while this one is active */
+.video-link-hover #custom-cursor { opacity: 0 !important; }
+
+.figure-center-video {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+
+.figure-center-video .video-watch-button {
+  align-self: flex-start;   /* overrides the parent's align-items just for this child */
+}

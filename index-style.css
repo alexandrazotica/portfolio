@@ -1,0 +1,322 @@
+/* ==========================================================================
+   BIG HOVER LABEL  (bottom-fixed text shown on menu-item hover; sized by JS)
+   ========================================================================== */
+
+#hover-display {
+  position: fixed;
+  display: block;
+  padding: 2rem 0rem;
+  bottom: 0rem;
+  height: var(--sticky-offset);
+  line-height: 9rem;
+  font-size: 10rem;
+  font-weight: 700;
+  color: rgba(0, 251, 255, 0);
+  pointer-events: none;
+  transition: color .2s ease, background-color .3s ease;
+  z-index: 10000;
+}
+
+#hover-display.visible {
+  color: rgb(255, 0, 153);
+  background-color: rgba(0, 251, 255);
+}
+
+/* ==========================================================================
+   HERO VIDEO BACKDROP
+   ========================================================================== */
+
+.hero-videos {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 0;
+  opacity: 1;
+  transition: opacity .3s ease;
+}
+
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+
+.hero-video.active {
+  z-index: 1;
+}
+
+.hero-video.vertical {
+  width: auto;
+  max-width: 100%;
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  background-color: white;
+}
+
+html:has(#info.show-menu) .hero-video,
+html:has(#works.show-menu) .hero-video,
+html:has(#contacts.show-menu) .hero-video,
+html:has(#info.show-menu) .mobile-hero-video,
+html:has(#works.show-menu) .mobile-hero-video,
+html:has(#contacts.show-menu) .mobile-hero-video {
+  filter: blur(15px);
+  transform: scale(1.15);
+}
+
+/* ---- Glitch transition between videos ---- */
+
+.hero-videos.glitch {
+  animation: hero-glitch .5s steps(1, end) 1;
+}
+
+.hero-videos::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      transparent 20%,
+      rgba(255, 0, 153, .65) 20% 24%,
+      transparent 24% 58%,
+      rgba(255, 130, 210, .6) 58% 63%,
+      transparent 63%
+    );
+  mix-blend-mode: screen;
+}
+
+@keyframes hero-glitch {
+  0%   { transform: none;                          filter: none;                                                   clip-path: inset(0); }
+  10%  { transform: translate(-2%, 0) skewX(2deg);  filter: sepia(1) hue-rotate(290deg) saturate(5) contrast(1.4);   clip-path: inset(10% 0 55% 0); }
+  20%  { transform: translate(3%, 0);               filter: sepia(1) hue-rotate(300deg) saturate(8) brightness(1.4); clip-path: inset(60% 0 10% 0); }
+  30%  { transform: translate(-1%, 1%);             filter: sepia(1) hue-rotate(280deg) saturate(4);                 clip-path: inset(0); }
+  40%  { transform: translate(2%, 0) skewX(-3deg);  filter: sepia(1) hue-rotate(295deg) saturate(10) contrast(2);     clip-path: inset(30% 0 30% 0); }
+  50%  { transform: none;                           filter: brightness(0);                                           clip-path: inset(0); }  /* swap happens here */
+  60%  { transform: translate(-3%, 0);              filter: sepia(1) hue-rotate(300deg) saturate(6);                 clip-path: inset(45% 0 20% 0); }
+  70%  { transform: translate(1%, -1%);             filter: sepia(1) hue-rotate(290deg) saturate(9) brightness(1.5); clip-path: inset(0); }
+  80%  { transform: translate(-1%, 0) skewX(1deg);  filter: sepia(1) hue-rotate(285deg) saturate(5) contrast(1.6);   clip-path: inset(15% 0 65% 0); }
+  90%  { transform: none;                           filter: sepia(.5) hue-rotate(300deg) saturate(2);                clip-path: inset(0); }
+  100% { transform: none;                           filter: none;                                                    clip-path: inset(0); }
+}
+
+/* ==========================================================================
+   VIDEO INFO ROW  (project name link + categories, over the hero video)
+   ========================================================================== */
+
+#video-info-row {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  z-index: 90000;
+  opacity: var(--hero-fade, 1);
+  transition: opacity .3s ease;
+  pointer-events: none;
+}
+
+/* Hidden while a menu panel is open, or while any header menu-item is hovered */
+html:has(.menu-item.show-menu) #video-info-row,
+html:has(.menu-item:hover) #video-info-row {
+  opacity: 0;
+}
+
+#video-label {
+  pointer-events: auto;
+  color: rgb(255, 0, 153);
+  background-color: rgba(0, 251, 255);
+  white-space: nowrap;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  transition: font-size .25s ease;
+}
+
+#video-label:hover {
+  font-size: calc(clamp(1.5rem, 4vw, 2.5rem) * 1.5);
+}
+
+#video-categories {
+  color: rgba(0, 251, 255);
+  background-color: rgb(255, 0, 153);
+  white-space: nowrap;
+  padding: 0rem 0rem 0.5rem 0rem;
+  position: relative;
+  align-self: flex-start; /* container's cross-axis start, used as a common anchor */
+  transform: translateY(1.2rem); /* nudges it down to look bottom-aligned at rest */
+  transition: transform .25s ease;
+}
+
+/* On label hover: categories rises to top-aligned */
+#video-label:hover ~ #video-categories {
+  transform: translateY(0); 
+}
+
+.mobile-hero-pair {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #video-info-row {
+    flex-direction: column;
+    align-items: center;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+  }
+
+  #video-categories {
+    transform: none;
+    align-self: center;   /* cancel the desktop flex-start anchor */
+    font-size: clamp(1rem, 4vw, 1.4rem);
+  }
+
+  #video-label {
+    font-size: clamp(2.25rem, 20vw, 3.75rem);
+    letter-spacing: -0.1rem;
+    white-space: normal;
+    max-width: 90vw;
+
+    text-align: center;
+  }
+
+ #video-label:hover {
+    font-size: clamp(2.25rem, 20vw, 3.75rem);   /* same as your mobile #video-label base size — cancels the desktop hover scale-up */
+  }
+
+
+ .hero-videos {
+    display: none;   /* hidden by default on mobile */
+  }
+
+  .mobile-hero-pair {
+    display: flex;    /* shown by default on mobile */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    flex-direction: column;
+  }
+
+  .mobile-hero-video {
+    width: 100%;
+    height: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* When the current video has a vertical version, flip which system shows */
+  html.mobile-vertical-mode .hero-videos {
+    display: block;
+  }
+
+  html.mobile-vertical-mode .mobile-hero-pair {
+    display: none;
+  }
+
+   html.mobile-vertical-mode .hero-video.vertical {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    transform: none;
+    object-fit: cover;
+    background-color: transparent;
+  }
+}
+/* ==========================================================================
+   VIDEO TINT / LIGHTEN OVERLAYS  (reacts to open menu panels)
+   ========================================================================== */
+
+.video-lighten {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.208);
+  mix-blend-mode: lighten;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1; /* below .video-tint */
+  transition: opacity .3s ease;
+}
+
+.video-tint {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgb(255, 0, 153);
+  mix-blend-mode: color;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2; /* above .video-lighten */
+  transition: opacity .3s ease;
+}
+
+html:has(#info.show-menu) .video-tint,
+html:has(#works.show-menu) .video-tint,
+html:has(#contacts.show-menu) .video-tint,
+html:has(#info.show-menu) .video-lighten,
+html:has(#works.show-menu) .video-lighten,
+html:has(#contacts.show-menu) .video-lighten {
+  opacity: 0.8;
+}
+
+html:has(#info.show-menu) .hero-video,
+html:has(#works.show-menu) .hero-video {
+  filter: blur(15px);
+}
+
+html:has(#info.show-menu) #az,
+html:has(#info.show-menu) .hour,
+html:has(#info.show-menu) #hover-display.visible,
+html:has(#works.show-menu) #az,
+html:has(#works.show-menu) .hour,
+html:has(#works.show-menu) #hover-display.visible,
+html:has(#contacts.show-menu) #az,
+html:has(#contacts.show-menu) .hour,
+html:has(#contacts.show-menu) #hover-display.visible {
+  color: rgba(0, 0, 0, 0.8);
+  transition: color .3s ease;
+}
+
+/* The open menu's own label sits on its cyan panel background, so it stays dark */
+html:has(#info.show-menu) .menu-item .label,
+html:has(#works.show-menu) .menu-item .label,
+html:has(#contacts.show-menu) .menu-item .label {
+  color: rgba(0, 0, 0, 0.8);
+  transition: color .3s ease;
+}
+
+@media (max-width: 768px) {
+
+#hover-display {
+  padding: 1.5rem 0rem;
+  bottom: 0rem;
+  height: var(--sticky-offset);
+  line-height: 9rem;
+  font-size: 6rem;
+  font-weight: 700;
+  color: rgba(0, 251, 255, 0);
+  pointer-events: none;
+  transition: color .2s ease, background-color .3s ease;
+  z-index: 10000;
+}
+
+}
