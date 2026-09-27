@@ -533,9 +533,9 @@ color:rgba(0, 0, 0, 0.7);
    #info.show-menu .panel {
     left: auto;
     right: 0;
-    width: 83vw;
+    width: 78vw;
     font-size: clamp(0.95rem, 2vw, 1rem);
-    height: clamp(31.3rem, calc(83.5vh - var(--sticky-offset)), calc(62.6rem - var(--sticky-offset)));
+  height: clamp(18rem, calc(83.5vh - var(--sticky-offset)), calc(62.6rem - var(--sticky-offset)));
     overflow-y: auto;
   }
 
