@@ -740,3 +740,41 @@ if (yearToggle) {
     yearToggle.dataset.order = next;
   });
 }
+
+/* ---- Warm up hover previews so they're ready before the first hover ---- */
+function warmPreviews() {
+  // touch devices hide previews entirely, and data-savers shouldn't pay for them
+  if (!window.matchMedia('(hover: hover)').matches) return;
+  if (navigator.connection?.saveData) return;
+
+  const rows = [...document.querySelectorAll('.row[data-preview]')];
+  if (!rows.length) return;
+
+  // default previews first, then every per-discipline variant
+  const defaults = rows.map(r => r.dataset.preview);
+  const variants = rows.flatMap(r =>
+    r.getAttributeNames()
+      .filter(n => n.startsWith('data-preview-'))
+      .map(n => r.getAttribute(n))
+  );
+
+  // images first (small), videos after; de-duplicated
+  const srcs = [...new Set([...defaults, ...variants])]
+    .sort((a, b) => isVideoSrc(a) - isVideoSrc(b));
+
+  let i = 0;
+  const next = () => {
+    if (i >= srcs.length) return;
+    const entry = getPreview(srcs[i++]);
+    if (entry.ready) return next();
+    const evt = entry.isVideo ? 'loadeddata' : 'load';
+    entry.el.addEventListener(evt, next, { once: true });
+    entry.el.addEventListener('error', next, { once: true });
+  };
+
+  next(); next();   // two downloads at a time, so it doesn't flood the connection
+}
+
+window.addEventListener('load', () => {
+  (window.requestIdleCallback || (fn => setTimeout(fn, 500)))(warmPreviews);
+});
