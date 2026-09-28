@@ -317,3 +317,14 @@ const attrs = [
     link.parentNode.insertBefore(button, link.nextSibling);
   });
 })();
+
+(function resetGalleryScroll() {
+  const galleries = document.querySelectorAll('.project-gallery-h, .project-gallery-v');
+  if (!galleries.length) return;
+
+  const reset = () => galleries.forEach(g => g.scrollTo({ left: 0, behavior: 'instant' }));
+
+  reset();                                  // on first run
+  window.addEventListener('load', reset);   // after the browser's own restore attempt
+  window.addEventListener('pageshow', reset); // fires on back/forward (bfcache) too
+})();

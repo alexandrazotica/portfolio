@@ -156,9 +156,8 @@ html:has(.menu-item:hover) #video-info-row {
     align-items: center;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
     text-align: center;
-    top:52.5%;
+    top:53%;
   }
 
   #video-categories {
