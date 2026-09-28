@@ -272,14 +272,6 @@ display: block;
     white-space: nowrap;
     font-size: 0.9rem;
   }
-
-   #pittogramma-gallery-1 figure {
-    order: 1;
-  }
-
-  #pittogramma-gallery-1 figure:has(video) {
-    order: -1;
-  }
 }
 
 .project-footer {
