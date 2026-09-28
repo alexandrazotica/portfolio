@@ -222,25 +222,39 @@ const attrs = [
   const videos = document.querySelectorAll('video[data-src]');
   if (!videos.length) return;
 
-  const observer = new IntersectionObserver((entries) => {
+  function ensureLoaded(video) {
+    if (video.src) return;
+    video.preload = 'auto';
+    video.src = video.dataset.src;
+    video.load();
+  }
+
+  // Tier 1: start downloading well before the video is on screen
+  const loader = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      ensureLoaded(entry.target);
+      loader.unobserve(entry.target);   // only needs to happen once
+    });
+  }, { rootMargin: '1000px 600px', threshold: 0 });
+
+  // Tier 2: play/pause only when actually visible
+  const player = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       const video = entry.target;
       if (entry.isIntersecting) {
-        if (!video.src) {
-          video.src = video.dataset.src;
-        }
+        ensureLoaded(video);            // safety net if tier 1 hasn't fired yet
         video.play().catch(() => {});
       } else {
         video.pause();
       }
     });
-  }, {
-    root: null,
-    rootMargin: '0px 400px',
-    threshold: 0.1
-  });
+  }, { rootMargin: '0px 100px', threshold: 0.1 });
 
-  videos.forEach(video => observer.observe(video));
+  videos.forEach(v => {
+    loader.observe(v);
+    player.observe(v);
+  });
 })();
 
 (function mobileGalleryArrows() {
